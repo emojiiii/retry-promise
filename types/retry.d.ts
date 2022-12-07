@@ -50,7 +50,6 @@ export interface IRetryOperator<T> {
      *      }
      * })
      * promise().then(() => {
-     *    // Operation succeeded!
      *   console.log('Operation succeeded!')
      * }).catch((err) => {
      *    console.log('err: ', err)
@@ -80,7 +79,6 @@ export declare const delay: (ms: number) => Promise<void>;
  *      }
  * })
  * promise().then(() => {
- *    // Operation succeeded!
  *   console.log('Operation succeeded!')
  * }).catch((err) => {
  *    console.log('err: ', err)

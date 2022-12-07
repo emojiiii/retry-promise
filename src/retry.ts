@@ -51,7 +51,6 @@ export interface IRetryOperator<T> {
      *      }
      * })
      * promise().then(() => {
-     *    // Operation succeeded!
      *   console.log('Operation succeeded!')
      * }).catch((err) => {
      *    console.log('err: ', err)
@@ -84,7 +83,6 @@ export const delay = (ms: number): Promise<void> => new Promise(resolve => setTi
  *      }
  * })
  * promise().then(() => {
- *    // Operation succeeded!
  *   console.log('Operation succeeded!')
  * }).catch((err) => {
  *    console.log('err: ', err)
@@ -95,7 +93,7 @@ export const retryPromiseFactory = <T>(fn: IRetryOperator<T>, options?: IRetryOp
 
     let abort: ((reason?: any) => void) | undefined
     const operation = (...args: any[]) => {
-        return new Promise<T>(async (_, reject) => {
+        return new Promise<T>(async (resolve, reject) => {
             let retries = 0
 
             abort = (reason: any) => {
@@ -107,8 +105,8 @@ export const retryPromiseFactory = <T>(fn: IRetryOperator<T>, options?: IRetryOp
             }
             while (retries < maxRetries) {
                 try {
-                    console.log('retries: ', retries)
-                    return await fn(...args)
+                    const result = await fn(...args)
+                    return resolve(result)
                 } catch (err) {
                     if (retries === maxRetries - 1) {
                         return reject(err)
