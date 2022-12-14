@@ -108,7 +108,7 @@ export const retryPromiseFactory = <T>(fn: IRetryOperator<T>, options?: IRetryOp
                     const result = await fn(...args)
                     return resolve(result)
                 } catch (err) {
-                    if (retries === maxRetries - 1) {
+                    if (retries >= maxRetries - 1) {
                         return reject(err)
                     }
                     retries++
