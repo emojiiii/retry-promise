@@ -1,6 +1,6 @@
 {
   "name": "@emojiiii/retry-promise",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "retry promise",
   "main": "./dist/index.min.js",
   "module": "./dist/index.es.js",

@@ -88,7 +88,7 @@ export const delay = (ms: number): Promise<void> => new Promise(resolve => setTi
  *    console.log('err: ', err)
  * })
  */
-export const retryPromiseFactory = <T>(fn: IRetryOperator<T>, options?: IRetryOptions): IRetryOperator<T> => {
+export const retryPromiseFactory = <T>(fn: (...args: any[]) => Promise<T>, options?: IRetryOptions): IRetryOperator<T> => {
     const { maxRetries = 3, retryDelay = 1000, maxRetryDelay = 60000, retryDelayType = 'exponential' } = options || {}
 
     let abort: ((reason?: any) => void) | undefined
@@ -108,11 +108,11 @@ export const retryPromiseFactory = <T>(fn: IRetryOperator<T>, options?: IRetryOp
                     const result = await fn(...args)
                     return resolve(result)
                 } catch (err) {
-                    if (retries >= maxRetries - 1) {
+                    if (retries >= maxRetries) {
                         return reject(err)
                     }
+                    const delayTime = retryDelayType === 'exponential' ? Math.min(Math.pow(2, retries) * retryDelay, maxRetryDelay) : retryDelay
                     retries++
-                    const delayTime = retryDelayType === 'exponential' ? Math.min(retryDelay * retries, maxRetryDelay) : retryDelay
                     await delay(delayTime)
                 }
             }

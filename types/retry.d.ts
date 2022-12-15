@@ -84,4 +84,4 @@ export declare const delay: (ms: number) => Promise<void>;
  *    console.log('err: ', err)
  * })
  */
-export declare const retryPromiseFactory: <T>(fn: IRetryOperator<T>, options?: IRetryOptions) => IRetryOperator<T>;
+export declare const retryPromiseFactory: <T>(fn: (...args: any[]) => Promise<T>, options?: IRetryOptions) => IRetryOperator<T>;
